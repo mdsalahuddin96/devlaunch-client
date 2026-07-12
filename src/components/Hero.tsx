@@ -22,7 +22,7 @@ export default function Hero() {
     return () => clearInterval(interval);
   }, []);
 
-  // Real context feature data cards (Strict Rule: No placeholder lorem ipsum data)
+  // Real context feature data cards 
   const previewFeatures = {
     fullstack: { title: "MERN Stack Engine", lines: ["import { auth } from '@/lib/auth';", "const db = await connectMongo();", "Status: 🚀 Live & Secure Engine ready."] },
     frontend: { title: "Next.js 15 UI Shell", lines: ["export default function Shell() {", "  return <Navbar theme='emerald' />", "Status: 🎨 Pixel Perfect Grid loaded."] },

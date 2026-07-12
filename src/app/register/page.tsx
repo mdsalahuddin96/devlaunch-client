@@ -4,6 +4,10 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { Button, Spinner } from "@heroui/react";
 import { Terminal, UserPlus, ArrowLeft } from "lucide-react";
+import { authClient } from "@/lib/auth-client";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
+
 
 export default function RegisterPage() {
   const [name, setName] = useState<string>("");
@@ -11,8 +15,10 @@ export default function RegisterPage() {
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-
-  const handleRegisterSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const router=useRouter()
+  const handleRegisterSubmit = async (
+    e: React.SubmitEvent<HTMLFormElement>,
+  ) => {
     e.preventDefault();
     setError(null);
 
@@ -31,10 +37,33 @@ export default function RegisterPage() {
     }
 
     setLoading(true);
+    const userData = {
+      name,
+      email,
+      password,
+    };
+    console.log(userData);
     // Better Auth server pipeline endpoint bridge map execution
-    // await authClient.signUp.email({ email, password, name });
-
-    setTimeout(() => setLoading(false), 1200);
+    const { error: loginErr } = await authClient.signUp.email({
+      email,
+      password,
+      name, 
+    },{
+      onSuccess:()=>{
+        router.push("/")
+      }
+    });
+    if (loginErr) {
+      if (loginErr?.message) {
+        setError(loginErr?.message);
+      } else {
+        setError(null);
+      }
+      setTimeout(() => setLoading(false));
+    } else {
+      toast.success("Register Successful!");
+      setTimeout(() => setLoading(false), 1200);
+    }
   };
 
   return (
@@ -114,7 +143,9 @@ export default function RegisterPage() {
             {loading ? (
               <div className="flex items-center gap-2">
                 <Spinner className="text-brand-dark" />
-                <span className="text-xs text-brand-dark">Creating Profile</span>
+                <span className="text-xs text-brand-dark">
+                  Creating Profile
+                </span>
               </div>
             ) : (
               <span className="flex items-center gap-2">
