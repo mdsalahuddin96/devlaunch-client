@@ -37,12 +37,6 @@ export default function RegisterPage() {
     }
 
     setLoading(true);
-    const userData = {
-      name,
-      email,
-      password,
-    };
-    console.log(userData);
     // Better Auth server pipeline endpoint bridge map execution
     const { error: loginErr } = await authClient.signUp.email({
       email,
@@ -51,6 +45,7 @@ export default function RegisterPage() {
     },{
       onSuccess:()=>{
         router.push("/")
+        router.refresh()
       }
     });
     if (loginErr) {
