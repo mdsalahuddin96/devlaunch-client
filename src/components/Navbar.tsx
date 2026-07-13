@@ -28,7 +28,7 @@ export default function Navbar() {
   const publicRoutes = [
     {
       name: "Explore",
-      href: "/projects/explore",
+      href: "/projects",
       icon: <Compass className="w-4 h-4" />,
     },
     { name: "About", href: "/about", icon: <Info className="w-4 h-4" /> },
@@ -39,7 +39,7 @@ export default function Navbar() {
   const privateRoutes = [
     {
       name: "Explore",
-      href: "/projects/explore",
+      href: "/projects",
       icon: <Compass className="w-4 h-4" />,
     },
     {
