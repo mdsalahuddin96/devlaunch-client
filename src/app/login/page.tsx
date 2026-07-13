@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Button, Spinner } from "@heroui/react";
 import { Terminal, KeyRound, LogIn } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import toast from "react-hot-toast";
 
 
@@ -15,6 +15,9 @@ export default function LoginPage() {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const router=useRouter()
+  const searchParams=useSearchParams()
+  const redirectTo=searchParams.get('redirectTo')
+  
   // Requirement 7 Match: Demo login handler code template string fields
   const handleDemoLogin = () => {
     setEmail("salauddincse96@email.com"); // Real context user fallback criteria data syntax context
@@ -28,7 +31,7 @@ export default function LoginPage() {
     // Better Auth runtime logic pipeline connection anchor parameter layout
     const { error:loginErr}=await authClient.signIn.email({ email, password },{
       onSuccess:()=>{
-        router.push("/")
+        router.push(redirectTo?`${redirectTo}`:'/')
         router.refresh()
       }
     });
@@ -131,7 +134,7 @@ export default function LoginPage() {
         <p className="text-xs text-center text-zinc-400">
           Don&apos;t have an account?{" "}
           <Link
-            href="/register"
+            href={`/register?redirectTo=${redirectTo}`}
             className="text-brand-accent hover:underline font-medium"
           >
             Create account

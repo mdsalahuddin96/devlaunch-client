@@ -6,7 +6,7 @@ import { Button, Spinner } from "@heroui/react";
 import { Terminal, UserPlus, ArrowLeft } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 
 export default function RegisterPage() {
@@ -16,6 +16,9 @@ export default function RegisterPage() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const router=useRouter()
+  const searchParams=useSearchParams()
+  const redirectTo=searchParams.get("redirectTo")
+
   const handleRegisterSubmit = async (
     e: React.SubmitEvent<HTMLFormElement>,
   ) => {
@@ -44,7 +47,7 @@ export default function RegisterPage() {
       name, 
     },{
       onSuccess:()=>{
-        router.push("/")
+        router.push(redirectTo?`${redirectTo}`:"/")
         router.refresh()
       }
     });
