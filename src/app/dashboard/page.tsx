@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { FolderGit2, MessageSquare, Star, Activity, BarChart3, TrendingUp } from "lucide-react";
 import { Surface } from "@heroui/react";
-import { useSession } from "@/lib/auth-client";
+import { authClient, useSession } from "@/lib/auth-client";
 import { 
   BarChart, 
   Bar, 
@@ -51,24 +51,34 @@ export default function DashboardOverview() {
     router.refresh()
   }
   useEffect(() => {
-    if (!userId) return;
+  if (!userId) return;
 
-    fetch(`http://localhost:5000/api/dashboard/stats?userId=${userId}`)
-      .then((res) => res.json())
-      .then((resData) => {
-        if (resData.success) {
-          setData({ 
-            stats: resData.stats, 
-            recentReviews: resData.recentReviews,
-            techDistribution: resData.techDistribution,
-            activityTrendData:resData.activityTrendData
-          });
+  const fetchDashboardData = async () => {
+    try {
+      const {data} = await authClient.token();
+      const response = await fetch(`http://localhost:5000/api/dashboard/stats?userId=${userId}`, {
+        headers: {
+          authorization: `Bearer ${data?.token}` 
         }
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
-  }, [userId]);
+      });
+      const resData = await response.json();
 
+      if (resData.success) {
+        setData({ 
+          stats: resData.stats, 
+          recentReviews: resData.recentReviews,
+          techDistribution: resData.techDistribution,
+          activityTrendData: resData.activityTrendData
+        });
+      }
+    } catch (error) {
+      console.error("Error fetching dashboard data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  fetchDashboardData();
+}, [userId]);
   if (loading) {
     return (
       <div className="min-h-[60vh] flex items-center justify-center text-zinc-500 font-mono text-sm">

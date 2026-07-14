@@ -1,7 +1,9 @@
 "use server"
 import { revalidatePath } from "next/cache";
+import { auth } from "../auth";
 
 export async function deleteProjectAction(projectId: string) {
+  const {token}=await auth.api.getToken()
   if (!projectId) {
     return { success: false, message: "Project ID is required." };
   }
@@ -9,6 +11,9 @@ export async function deleteProjectAction(projectId: string) {
   try {
     const response = await fetch(`http://localhost:5000/projects/${projectId}`, {
       method: "DELETE",
+      headers:{
+        authorization:`Bearer ${token}`
+      }
     });
 
     if (!response.ok) {

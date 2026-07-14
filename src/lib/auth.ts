@@ -1,6 +1,7 @@
 import { betterAuth } from "better-auth";
 import { MongoClient } from "mongodb";
 import { mongodbAdapter } from "better-auth/adapters/mongodb";
+import { jwt } from "better-auth/plugins";
 
 if (!process.env.MONGODB_URI) {
   throw new Error("MONGODB_URI is missing");
@@ -17,4 +18,14 @@ export const auth = betterAuth({
     enabled: true,
     minPasswordLength:6,
   },
+  session:{
+    cookieCache:{
+      enabled:true,
+      strategy:"jwt",
+      maxAge:7*24*60*60
+    }
+  },
+  plugins:[
+    jwt()
+  ]
 });

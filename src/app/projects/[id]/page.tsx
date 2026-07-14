@@ -18,6 +18,12 @@ import { headers } from "next/headers";
 import { auth } from "@/lib/auth";
 import { submitProjectReviewAction } from "@/lib/actions/submitProjectReview";
 
+interface Review {
+  username: string;
+  rating: number;
+  comment: string;
+  createdAt: string;
+}
 interface Project {
   _id: string;
   title: string;
@@ -31,7 +37,7 @@ interface Project {
   liveUrl: string;
   githubUrl?: string;
   priority?: "Low" | "Medium" | "High";
-  reviews?: Review[];
+  reviews?:Review[];
 }
 
 interface PageProps {
@@ -46,6 +52,9 @@ export default async function ProjectDetailsPage({ params }: PageProps) {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
+  const {token}=await auth.api.getToken({
+    headers:await headers()
+  })
   const isUserLoggedIn = session?.user || false;
 
   if (!isUserLoggedIn) {
@@ -57,6 +66,9 @@ export default async function ProjectDetailsPage({ params }: PageProps) {
   try {
     const response = await fetch(`http://localhost:5000/projects/${id}`, {
       cache: "no-store",
+      headers:{
+        authorization:`Bearar ${token}`
+      }
     });
 
     if (response.ok) {

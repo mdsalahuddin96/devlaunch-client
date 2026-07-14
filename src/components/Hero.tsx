@@ -63,7 +63,7 @@ export default function Hero() {
           {/* Interactive CTA Controls Row */}
           <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
             <Link 
-              href="/projects/explore"
+              href="/projects"
               className="w-full sm:w-auto group inline-flex items-center justify-center gap-2 bg-brand-accent text-brand-dark font-bold rounded-xl px-6 py-3.5 transition-all transform hover:-translate-y-0.5 active:translate-y-0 shadow-lg shadow-brand-accent/20 hover:brightness-110"
             >
               <span>Explore Builds</span>
@@ -71,7 +71,7 @@ export default function Hero() {
             </Link>
             
             <Link 
-              href="/register"
+              href="/add/project"
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2 border border-brand-muted/10 bg-brand-muted  hover:text-white hover:bg-brand-muted/90 font-semibold rounded-xl px-6 py-3.5 transition-colors"
             >
               <span>Publish Yours</span> <Code2/>
