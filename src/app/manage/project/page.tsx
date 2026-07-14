@@ -1,8 +1,17 @@
-import React from "react";
-import { Settings, ArrowLeft, Trash2, Globe, ExternalLink } from "lucide-react";
+import {
+  Settings,
+  ArrowLeft,
+  Trash2,
+  Globe,
+  ExternalLink,
+  Eye,
+} from "lucide-react";
 import { Button } from "@heroui/react";
 import Link from "next/link";
-// import { deleteProjectAction } from "./actions";
+import EditProjectButton from "./EditProjectBtn";
+import DeleteProjectBtn from "./DeleteProjectBtn";
+
+
 
 // Project type define
 interface Project {
@@ -11,12 +20,15 @@ interface Project {
   author: string;
   difficulty: string;
   liveUrl: string;
+  imageUrl:string;
 }
 
 // Data Fetching
 async function getProjects(): Promise<Project[]> {
   try {
-    const res = await fetch("http://localhost:5000/projects", { cache: "no-store" });
+    const res = await fetch("http://localhost:5000/projects", {
+      cache: "no-store",
+    });
     if (!res.ok) return [];
     return res.json();
   } catch (error) {
@@ -27,14 +39,13 @@ async function getProjects(): Promise<Project[]> {
 
 export default async function ManageProjectsPage() {
   const projects = await getProjects();
-
+ 
   return (
     <div className="min-h-screen bg-brand-dark pt-28 pb-16 text-zinc-100">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 space-y-6">
-        
         {/* Navigation Link */}
-        <Link 
-          href="/projects/explore" 
+        <Link
+          href="/projects/explore"
           className="inline-flex items-center gap-2 text-xs font-mono text-zinc-400 hover:text-brand-accent transition-colors group"
         >
           <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
@@ -43,7 +54,6 @@ export default async function ManageProjectsPage() {
 
         {/* Card Panel */}
         <div className="bg-zinc-950 border border-brand-muted rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6">
-          
           {/* Header */}
           <div className="border-b border-brand-muted/30 pb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
@@ -51,11 +61,17 @@ export default async function ManageProjectsPage() {
                 <Settings className="w-6 h-6 text-brand-accent" />
                 <span>Manage Projects</span>
               </h1>
-              <p className="text-xs text-zinc-400 mt-1">Control, monitor, or remove existing project workspaces from the live database.</p>
+              <p className="text-xs text-zinc-400 mt-1">
+                Control, monitor, or remove existing project workspaces from the
+                live database.
+              </p>
             </div>
-            
+
             <Link href="/projects/add">
-              <Button size="sm" className="bg-brand-accent text-brand-dark font-bold rounded-xl px-4 py-2 text-xs">
+              <Button
+                size="sm"
+                className="bg-brand-accent text-brand-dark font-bold rounded-xl px-4 py-2 text-xs"
+              >
                 + Add New Project
               </Button>
             </Link>
@@ -64,7 +80,9 @@ export default async function ManageProjectsPage() {
           {/* Projects Table / List */}
           {projects.length === 0 ? (
             <div className="text-center py-16 bg-brand-dark/40 border border-brand-muted/40 rounded-2xl text-sm text-zinc-500">
-              <p>No projects available to manage. Try publishing a new one first!</p>
+              <p>
+                No projects available to manage. Try publishing a new one first!
+              </p>
             </div>
           ) : (
             <div className="border border-brand-muted/40 rounded-2xl overflow-hidden bg-brand-dark/20">
@@ -72,28 +90,42 @@ export default async function ManageProjectsPage() {
                 <table className="w-full text-left border-collapse">
                   <thead>
                     <tr className="bg-zinc-900/60 border-b border-brand-muted/30 text-[11px] font-mono tracking-wider text-zinc-400 uppercase">
-                      <th className="py-3.5 px-4 font-semibold">Project Details</th>
-                      <th className="py-3.5 px-4 font-semibold hidden sm:table-cell">Author</th>
-                      <th className="py-3.5 px-4 font-semibold hidden md:table-cell">Tier</th>
-                      <th className="py-3.5 px-4 font-semibold text-center">Actions</th>
+                      <th className="py-3.5 px-4 font-semibold">
+                        Project Details
+                      </th>
+                      <th className="py-3.5 px-4 font-semibold hidden sm:table-cell">
+                        Author
+                      </th>
+                      <th className="py-3.5 px-4 font-semibold hidden md:table-cell">
+                        Tier
+                      </th>
+                      <th className="py-3.5 px-4 font-semibold text-center">
+                        Actions
+                      </th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-brand-muted/20 text-sm">
                     {projects.map((project) => (
-                      <tr key={project._id} className="hover:bg-zinc-900/30 transition-colors">
-                        
+                      <tr
+                        key={project._id}
+                        className="hover:bg-zinc-900/30 transition-colors"
+                      >
                         {/* Title & Live Link */}
                         <td className="py-4 px-4 font-medium text-white max-w-[200px] sm:max-w-none truncate">
                           <div className="flex flex-col gap-1">
-                            <span className="text-sm font-bold tracking-tight text-zinc-100">{project.title}</span>
-                            <a 
-                              href={project.liveUrl} 
-                              target="_blank" 
-                              rel="noreferrer" 
+                            <span className="text-sm font-bold tracking-tight text-zinc-100">
+                              {project.title}
+                            </span>
+                            <a
+                              href={project.liveUrl}
+                              target="_blank"
+                              rel="noreferrer"
                               className="text-xs text-brand-accent/80 hover:underline flex items-center gap-1 font-mono"
                             >
                               <Globe className="w-3 h-3" />
-                              <span className="truncate max-w-[150px] sm:max-w-xs">{project.liveUrl}</span>
+                              <span className="truncate max-w-[150px] sm:max-w-xs">
+                                {project.liveUrl}
+                              </span>
                               <ExternalLink className="w-2.5 h-2.5" />
                             </a>
                           </div>
@@ -112,21 +144,19 @@ export default async function ManageProjectsPage() {
                         </td>
 
                         {/* Actions (Delete Form) */}
-                        <td className="py-4 px-4 text-center">
-                          <form action={async () => {
-                            "use server";
-                            // await deleteProjectAction(project._id);
-                          }} className="inline-block">
-                            <Button 
+                        <td className="py-4 px-4 text-center flex gap-1 items-center">
+                          <Link href={`/projects/${project._id}`}>
+                            <Button
                               type="submit"
                               size="sm"
-                              className="bg-red-500/10 hover:bg-red-500 border border-red-500/20 text-red-400 hover:text-white rounded-lg transition-all"
+                              className="bg-brand-dark border border-brand-muted/60 hover:bg-zinc-900 text-white rounded-lg transition-all"
                             >
-                              <Trash2 className="w-4 h-4" />
+                              <Eye className="w-4 h-4" />
                             </Button>
-                          </form>
+                          </Link>
+                            <DeleteProjectBtn id={project._id}/>
+                          <EditProjectButton project={project} />
                         </td>
-
                       </tr>
                     ))}
                   </tbody>
@@ -134,7 +164,6 @@ export default async function ManageProjectsPage() {
               </div>
             </div>
           )}
-
         </div>
       </div>
     </div>
