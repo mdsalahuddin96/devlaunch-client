@@ -1,17 +1,11 @@
-import {
-  Settings,
-  ArrowLeft,
-  Trash2,
-  Globe,
-  ExternalLink,
-  Eye,
-} from "lucide-react";
+import { Settings, ArrowLeft, Globe, ExternalLink, Eye } from "lucide-react";
 import { Button } from "@heroui/react";
 import Link from "next/link";
 import EditProjectButton from "./EditProjectBtn";
 import DeleteProjectBtn from "./DeleteProjectBtn";
-
-
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 
 // Project type define
 interface Project {
@@ -20,7 +14,7 @@ interface Project {
   author: string;
   difficulty: string;
   liveUrl: string;
-  imageUrl:string;
+  imageUrl: string;
 }
 
 // Data Fetching
@@ -39,13 +33,18 @@ async function getProjects(): Promise<Project[]> {
 
 export default async function ManageProjectsPage() {
   const projects = await getProjects();
- 
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+  if (!session?.user) {
+    redirect(`/login?redirectTo=manage/project`);
+  }
   return (
     <div className="min-h-screen bg-brand-dark pt-28 pb-16 text-zinc-100">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 space-y-6">
         {/* Navigation Link */}
         <Link
-          href="/projects/explore"
+          href="/projects"
           className="inline-flex items-center gap-2 text-xs font-mono text-zinc-400 hover:text-brand-accent transition-colors group"
         >
           <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
@@ -67,7 +66,7 @@ export default async function ManageProjectsPage() {
               </p>
             </div>
 
-            <Link href="/projects/add">
+            <Link href="/add/project">
               <Button
                 size="sm"
                 className="bg-brand-accent text-brand-dark font-bold rounded-xl px-4 py-2 text-xs"
@@ -154,7 +153,7 @@ export default async function ManageProjectsPage() {
                               <Eye className="w-4 h-4" />
                             </Button>
                           </Link>
-                            <DeleteProjectBtn id={project._id}/>
+                          <DeleteProjectBtn id={project._id} />
                           <EditProjectButton project={project} />
                         </td>
                       </tr>

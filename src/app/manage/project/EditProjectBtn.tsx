@@ -12,7 +12,8 @@ import {
   ListBox,
   Surface,
 } from "@heroui/react";
-// import { updateProjectAction } from "./actions";
+import { updateProjectAction } from "@/lib/actions/updateProjectAction";
+
 
 interface Project {
   _id: string;
@@ -31,14 +32,14 @@ export default function EditProjectButton({ project }: { project: Project }) {
     setIsPending(true);
 
     const formData = new FormData(event.currentTarget);
-    // const result = await updateProjectAction(project._id, formData);
+    const result = await updateProjectAction(project._id, formData);
 
     setIsPending(false);
-    // if (!result.success) {
-    //   alert(result.message);
-    // }
+    if (!result.success) {
+      alert(result.message);
+    }
   }
-  console.log("project", project);
+
   return (
     <Modal>
       {/* Trigger Button to open the Modal */}
@@ -47,7 +48,6 @@ export default function EditProjectButton({ project }: { project: Project }) {
         size="sm"
         variant="secondary"
         className="bg-brand-accent/10 hover:bg-brand-accent border border-brand-accent/20 text-brand-accent hover:text-brand-dark rounded-lg transition-all"
-        // title="Edit Project"
       >
         <Edit3 className="size-4" />
       </Button>
@@ -208,10 +208,10 @@ export default function EditProjectButton({ project }: { project: Project }) {
                 type="submit"
                 form={`edit-form-${project._id}`}
                 slot={isPending ? undefined : "close"}
-                // isLoading={isPending}
+                isDisabled={isPending}
                 className="bg-brand-accent text-brand-dark font-bold rounded-xl"
               >
-                Save Changes
+                {isPending?"Submitting...":"Save Changes"}
               </Button>
             </Modal.Footer>
           </Modal.Dialog>

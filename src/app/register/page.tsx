@@ -156,7 +156,7 @@ export default function RegisterPage() {
         <p className="text-xs text-center text-zinc-400 pt-2">
           Already verified inside engine index?{" "}
           <Link
-            href="/login"
+            href={`/login?redirectTo=${redirectTo}`}
             className="text-brand-accent hover:underline font-medium"
           >
             Sign In
