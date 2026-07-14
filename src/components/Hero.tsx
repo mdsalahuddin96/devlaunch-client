@@ -48,7 +48,7 @@ export default function Hero() {
           </div>
 
           {/* Heading */}
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.1]">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-muted leading-[1.1]">
             Showcase Your <br />
             <span className="bg-gradient-to-r from-brand-accent to-emerald-300 bg-clip-text text-transparent">
               Production Builds
