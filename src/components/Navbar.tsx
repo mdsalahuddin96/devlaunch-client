@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import  { useState } from "react";
 import Link from "next/link";
 import {
   Terminal,
@@ -14,13 +14,14 @@ import {
   Menu,
   X,
 } from "lucide-react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
 import { signOut, useSession } from "@/lib/auth-client";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathName = usePathname();
+  const router=useRouter()
   const { data, isPending } = useSession();
   const user = data?.user;
   const isLoggedIn = !!user;
@@ -49,12 +50,12 @@ export default function Navbar() {
     },
     {
       name: "Add Project",
-      href: "/items/add",
+      href: "/add/project",
       icon: <PlusCircle className="w-4 h-4" />,
     },
     {
       name: "Manage",
-      href: "/items/manage",
+      href: "/manage/project",
       icon: <Layers className="w-4 h-4" />,
     },
     { name: "About Us", href: "/about", icon: <Info className="w-4 h-4" /> },
@@ -64,6 +65,7 @@ export default function Navbar() {
 
   const handleSignout = async () => {
     await signOut();
+    router.refresh()
   };
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-brand-dark/80 backdrop-blur-md border-b border-brand-muted/40 h-16 transition-all duration-200">

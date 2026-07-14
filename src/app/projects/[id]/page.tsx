@@ -16,10 +16,12 @@ import Link from "next/link";
 
 import { headers } from "next/headers";
 import { auth } from "@/lib/auth";
+import { submitProjectReviewAction } from "@/lib/actions/submitProjectReview";
 
 interface Project {
   _id: string;
   title: string;
+  userId: string;
   description: string;
   tech: string[];
   difficulty: "Beginner" | "Intermediate" | "Advanced";
@@ -87,7 +89,7 @@ export default async function ProjectDetailsPage({ params }: PageProps) {
       </div>
     );
   }
-
+  const handleReviewSubmission = submitProjectReviewAction.bind(null, id);
   return (
     <div className="min-h-screen bg-brand-dark pt-28 pb-16 text-zinc-100">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 space-y-8">
@@ -215,72 +217,74 @@ export default async function ProjectDetailsPage({ params }: PageProps) {
           {/* ========================================== */}
           {/* 💬 SYSTEM REVIEW SUBSECTION MATRIX COMPONENT */}
           {/* ========================================== */}
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start pt-8 border-t border-brand-muted/30">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start p-8 border-t border-brand-muted/30">
             {/* Add a Review Form */}
-            <form
-            //   action={handleReviewSubmission}
-              className="md:col-span-5 bg-zinc-950 border border-brand-muted p-6 rounded-2xl space-y-4 shadow-xl"
-            >
-              <div className="border-b border-brand-muted/30 pb-3">
-                <h3 className="text-base font-bold text-white flex items-center gap-2">
-                  <MessageSquare className="w-4 h-4 text-brand-accent" />
-                  <span>Leave a Review</span>
-                </h3>
-                <p className="text-xs text-zinc-400 mt-1">
-                  Share your feedback about this project with the community.
-                </p>
-              </div>
-
-              <div className="space-y-1">
-                <label className="text-xs font-medium text-zinc-300">
-                  Your Name / Username
-                </label>
-                <input
-                  type="text"
-                  name="username"
-                  required
-                  placeholder="e.g. salauddin_cse"
-                  className="w-full px-3 py-2 bg-brand-dark border border-brand-muted rounded-xl text-sm text-white focus:border-brand-accent/50 outline-none transition-colors"
-                />
-              </div>
-
-              <div className="space-y-1">
-                <label className="text-xs font-medium text-zinc-300">
-                  Select Rating
-                </label>
-                <select
-                  name="rating"
-                  className="w-full px-3 py-2 bg-brand-dark border border-brand-muted rounded-xl text-sm text-zinc-300 focus:border-brand-accent/50 outline-none cursor-pointer"
-                >
-                  <option value="5">★ 5 Stars - Excellent Project</option>
-                  <option value="4">★ 4 Stars - Very Good</option>
-                  <option value="3">★ 3 Stars - Good / Standard</option>
-                  <option value="2">★ 2 Stars - Needs Improvement</option>
-                  <option value="1">★ 1 Star - Poor Quality</option>
-                </select>
-              </div>
-
-              <div className="space-y-1">
-                <label className="text-xs font-medium text-zinc-300">
-                  Your Comment
-                </label>
-                <textarea
-                  name="comment"
-                  rows={4}
-                  required
-                  placeholder="Write your thoughts about the design, features, or code quality..."
-                  className="w-full p-3 bg-brand-dark border border-brand-muted rounded-xl text-sm text-white focus:border-brand-accent/50 outline-none transition-colors resize-none"
-                />
-              </div>
-
-              <Button
-                type="submit"
-                className="w-full bg-brand-accent text-brand-dark hover:bg-brand-accent/90 font-bold text-sm rounded-xl py-4 transition-all shadow-lg"
+            {session?.user?.id !== project?.userId && (
+              <form
+                action={handleReviewSubmission}
+                className="md:col-span-5 bg-zinc-950 border border-brand-muted p-6 rounded-2xl space-y-4 shadow-xl"
               >
-                <Send className="w-4 h-4 mr-1.5" />
-                <span>Submit Review</span>
-              </Button>
-            </form>
+                <div className="border-b border-brand-muted/30 pb-3">
+                  <h3 className="text-base font-bold text-white flex items-center gap-2">
+                    <MessageSquare className="w-4 h-4 text-brand-accent" />
+                    <span>Leave a Review</span>
+                  </h3>
+                  <p className="text-xs text-zinc-400 mt-1">
+                    Share your feedback about this project with the community.
+                  </p>
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-xs font-medium text-zinc-300">
+                    Your Name / Username
+                  </label>
+                  <input
+                    type="text"
+                    name="username"
+                    required
+                    placeholder="e.g. salauddin_cse"
+                    className="w-full px-3 py-2 bg-brand-dark border border-brand-muted rounded-xl text-sm text-white focus:border-brand-accent/50 outline-none transition-colors"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-xs font-medium text-zinc-300">
+                    Select Rating
+                  </label>
+                  <select
+                    name="rating"
+                    className="w-full px-3 py-2 bg-brand-dark border border-brand-muted rounded-xl text-sm text-zinc-300 focus:border-brand-accent/50 outline-none cursor-pointer"
+                  >
+                    <option value="5">★ 5 Stars - Excellent Project</option>
+                    <option value="4">★ 4 Stars - Very Good</option>
+                    <option value="3">★ 3 Stars - Good / Standard</option>
+                    <option value="2">★ 2 Stars - Needs Improvement</option>
+                    <option value="1">★ 1 Star - Poor Quality</option>
+                  </select>
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-xs font-medium text-zinc-300">
+                    Your Comment
+                  </label>
+                  <textarea
+                    name="comment"
+                    rows={4}
+                    required
+                    placeholder="Write your thoughts about the design, features, or code quality..."
+                    className="w-full p-3 bg-brand-dark border border-brand-muted rounded-xl text-sm text-white focus:border-brand-accent/50 outline-none transition-colors resize-none"
+                  />
+                </div>
+
+                <Button
+                  type="submit"
+                  className="w-full bg-brand-accent text-brand-dark hover:bg-brand-accent/90 font-bold text-sm rounded-xl py-4 transition-all shadow-lg"
+                >
+                  <Send className="w-4 h-4 mr-1.5" />
+                  <span>Submit Review</span>
+                </Button>
+              </form>
+            )}
 
             {/* Display Reviews List */}
             <div className="md:col-span-7 space-y-4">
