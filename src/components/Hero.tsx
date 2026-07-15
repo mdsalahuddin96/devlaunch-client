@@ -30,7 +30,7 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative pt-24 pb-12 overflow-hidden flex items-center justify-center min-h-[65vh] md:min-h-[70vh] border-b border-brand-muted/30">
+    <section className="bg-brand-dark w-full relative pt-24 pb-12 overflow-hidden flex items-center justify-center min-h-[65vh] md:min-h-[70vh] border-b border-brand-muted/30">
       
       {/* Eye-catching Tech Background Radial Glow Spotlights */}
       <div className="absolute top-0 left-1/4 w-[400px] h-[400px] bg-brand-accent/10 rounded-full blur-[120px] pointer-events-none -z-10" />

@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { headers } from "next/headers";
 import { auth } from "../auth";
-import toast from "react-hot-toast";
+
 
 export async function createProjectAction(formData: FormData): Promise<void> {
   const title = formData.get("title") as string;
@@ -31,7 +31,6 @@ export async function createProjectAction(formData: FormData): Promise<void> {
     !imageUrl ||
     !liveUrl
   ) {
-    toast.error("Please fill out all required fields.");
     return;
   }
   const tech = techRaw
@@ -44,7 +43,7 @@ export async function createProjectAction(formData: FormData): Promise<void> {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        authorization: `Bearar ${token}`,
+        authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
         title,
@@ -60,16 +59,13 @@ export async function createProjectAction(formData: FormData): Promise<void> {
       }),
     });
 
-    if (!response.ok) {
-      toast.error("Failed to create project on the server.");
+    if (!response.ok) {   
       return;
     }
     revalidatePath("/add/project");
   } catch (error) {
     console.error("Error creating project:", error);
-    toast.error("Failed to create project on the server.");
     return;
   }
-  toast.success("Project Added Successfully!");
   redirect("/projects");
 }

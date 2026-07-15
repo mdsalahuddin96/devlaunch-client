@@ -15,8 +15,8 @@ export default function TrandingTechnology() {
   ];
 
   return (
-    <section className="bg-[#09090b] text-zinc-100 w-full">
-      <div className="max-w-6xl mx-auto space-y-10">
+    <section className="bg-[#09090b] text-zinc-100 w-full border-b border-brand-muted/30">
+      <div className="max-w-7xl sm:px-6 lg:px-8 mx-auto space-y-10 my-10">
         
         {/* Header */}
         <div className="space-y-1">
@@ -24,7 +24,7 @@ export default function TrandingTechnology() {
             <Flame className="size-3" />
             <span>POPULAR STACKS</span>
           </div>
-          <h2 className="text-xl font-bold text-white tracking-tight">Trending Technologies</h2>
+          <h2 className="text-xl font-bold tracking-tight bg-gradient-to-r from-brand-accent to-emerald-300 bg-clip-text text-transparent">Trending Technologies</h2>
           <p className="text-zinc-400 text-xs">The most used programming languages and frameworks right now.</p>
         </div>
 

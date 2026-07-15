@@ -37,7 +37,7 @@ interface Project {
   liveUrl: string;
   githubUrl?: string;
   priority?: "Low" | "Medium" | "High";
-  reviews?:Review[];
+  reviews?: Review[];
 }
 
 interface PageProps {
@@ -52,32 +52,32 @@ export default async function ProjectDetailsPage({ params }: PageProps) {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
-  const {token}=await auth.api.getToken({
-    headers:await headers()
-  })
-  const isUserLoggedIn = session?.user || false;
-
-  if (!isUserLoggedIn) {
-    // Dynamic access blocker mechanism triggered immediately before components mounting execution matrix loop
+  if (!session) {
     redirect(`/login?redirectTo=/projects/${id}`);
   }
-
+  const { token } = await auth.api.getToken({
+    headers: await headers(),
+  });
   let project: Project | null = null;
+  let authFailed = false;
   try {
     const response = await fetch(`http://localhost:5000/projects/${id}`, {
       cache: "no-store",
-      headers:{
-        authorization:`Bearar ${token}`
-      }
+      headers: {
+        authorization: `Bearer ${""}`,
+      },
     });
-
-    if (response.ok) {
+    if (response.status === 401 || response.status === 403) {
+      authFailed = true;
+    } else if (response.ok) {
       project = await response.json();
     }
   } catch (error) {
     console.error("Cluster instance fetch failed tracking parameters:", error);
   }
-
+  if (authFailed) {
+    redirect(`/unauthorized`);
+  }
   // Fallback interface block mapping layout error context
   if (!project) {
     return (

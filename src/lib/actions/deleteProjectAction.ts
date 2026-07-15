@@ -1,9 +1,13 @@
 "use server"
 import { revalidatePath } from "next/cache";
 import { auth } from "../auth";
+import { headers } from "next/headers";
 
 export async function deleteProjectAction(projectId: string) {
-  const {token}=await auth.api.getToken()
+  const {token}=await auth.api.getToken({
+    headers:await headers()
+  })
+  console.log("token",token)
   if (!projectId) {
     return { success: false, message: "Project ID is required." };
   }

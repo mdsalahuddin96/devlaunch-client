@@ -18,13 +18,17 @@ interface Project {
 }
 
 // Data Fetching
-async function getProjects(): Promise<Project[]> {
+async function getProjects(id: string, token: string): Promise<Project[]> {
   try {
-    const res = await fetch("http://localhost:5000/projects", {
+    const res = await fetch(`http://localhost:5000/user/project/${id}`, {
       cache: "no-store",
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
     });
     if (!res.ok) return [];
-    return res.json();
+    const data = await res.json();
+    return data;
   } catch (error) {
     console.error("Failed to fetch projects for management:", error);
     return [];
@@ -32,13 +36,16 @@ async function getProjects(): Promise<Project[]> {
 }
 
 export default async function ManageProjectsPage() {
-  const projects = await getProjects();
   const session = await auth.api.getSession({
     headers: await headers(),
   });
-  if (!session?.user) {
+  if (!session) {
     redirect(`/login?redirectTo=manage/project`);
   }
+  const { token } = await auth.api.getToken({
+    headers: await headers(),
+  });
+  const projects = await getProjects(session?.user?.id, token);
   return (
     <div className="min-h-screen bg-brand-dark pt-28 pb-16 text-zinc-100">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 space-y-6">

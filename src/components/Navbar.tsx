@@ -151,13 +151,6 @@ export default function Navbar() {
               >
                 Join Free
               </Link>
-              {/* Development helper controller to switch between testing views */}
-              <button
-                // onClick={() => setIsLoggedIn(true)}
-                className="hidden lg:block border border-brand-muted text-zinc-500 hover:text-zinc-300 text-[10px] px-2 py-1 rounded-md transition-colors"
-              >
-                Simulate Auth
-              </button>
             </div>
           )}
         </div>
