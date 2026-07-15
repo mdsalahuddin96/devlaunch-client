@@ -2,8 +2,8 @@
 
 import { revalidatePath } from "next/cache";
 import { auth } from "../auth";
+import { headers } from "next/headers";
 
-// ডিলিট অ্যাকশনটি আগের মতোই থাকবে...
 
 export async function updateProjectAction(projectId: string, formData: FormData) {
   const title = formData.get("title");
@@ -15,9 +15,11 @@ export async function updateProjectAction(projectId: string, formData: FormData)
   if (!projectId || !title || !author || !difficulty || !liveUrl ||!imageUrl) {
     return { success: false, message: "Missing required fields." };
   }
-  const {token}=await auth.api.getToken()
+  const {token}=await auth.api.getToken({
+    headers:await headers()
+  })
   try {
-    const response = await fetch(`http://localhost:5000/projects/${projectId}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/projects/${projectId}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",

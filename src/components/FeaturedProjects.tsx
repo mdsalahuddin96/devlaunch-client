@@ -29,7 +29,7 @@ export default function FeaturedProjects() {
   const [error, setError] = useState(false);
   const router=useRouter()
   useEffect(() => {
-    fetch("http://localhost:5000/projects")
+    fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/projects`)
       .then((res) => res.json())
       .then((data) => {
         if (data?.projects) {

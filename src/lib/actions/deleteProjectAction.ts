@@ -13,7 +13,7 @@ export async function deleteProjectAction(projectId: string) {
   }
 
   try {
-    const response = await fetch(`http://localhost:5000/projects/${projectId}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/projects/${projectId}`, {
       method: "DELETE",
       headers:{
         authorization:`Bearer ${token}`

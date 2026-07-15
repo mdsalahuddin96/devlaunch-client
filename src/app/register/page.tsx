@@ -47,7 +47,7 @@ export default function RegisterPage() {
       name, 
     },{
       onSuccess:()=>{
-        router.push(redirectTo?`${redirectTo}`:"/")
+        router.push(redirectTo!==null?`${redirectTo}`:"/")
         router.refresh()
       }
     });

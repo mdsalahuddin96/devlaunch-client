@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import toast from "react-hot-toast";
 import { auth } from "../auth";
+import { headers } from "next/headers";
 
 // Server action pipeline parsing processing logs data context entry
 export async function submitProjectReviewAction(id: string, formData: FormData): Promise<void> {
@@ -14,9 +15,11 @@ export async function submitProjectReviewAction(id: string, formData: FormData):
     toast.error("Validation failure. Check registry fields data integrity matrix.")
     return; 
   }
-  const {token}=await auth.api.getToken()
+  const {token}=await auth.api.getToken({
+    headers:await headers()
+  })
   try {
-    const response = await fetch(`http://localhost:5000/projects/${id}/review`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/projects/${id}/review`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

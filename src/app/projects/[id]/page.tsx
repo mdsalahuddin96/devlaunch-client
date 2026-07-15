@@ -61,13 +61,14 @@ export default async function ProjectDetailsPage({ params }: PageProps) {
   let project: Project | null = null;
   let authFailed = false;
   try {
-    const response = await fetch(`http://localhost:5000/projects/${id}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/projects/${id}`, {
       cache: "no-store",
       headers: {
-        authorization: `Bearer ${""}`,
+        authorization: `Bearer ${token}`,
       },
     });
-    if (response.status === 401 || response.status === 403) {
+    console.log("response",response.status)
+    if (response.status != 200) {
       authFailed = true;
     } else if (response.ok) {
       project = await response.json();

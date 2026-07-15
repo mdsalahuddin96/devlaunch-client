@@ -20,8 +20,8 @@ export default async function AddProjectPage() {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
-  if(!session?.user){
-    redirect(`/login?redirectTo=add/project`)
+  if (!session?.user) {
+    redirect(`/login?redirectTo=add/project`);
   }
   return (
     <div className="min-h-screen bg-brand-dark pt-28 pb-16 text-zinc-100">
@@ -124,6 +124,21 @@ export default async function AddProjectPage() {
                   <option value="Beginner">Beginner Tier</option>
                   <option value="Intermediate">Intermediate Tier</option>
                   <option value="Advanced">Advanced Tier</option>
+                </select>
+              </div>
+              <div className="space-y-1.5">
+                <label className="text-xs font-medium text-zinc-300 flex items-center gap-1.5">
+                  <Layers className="w-3.5 h-3.5 text-zinc-500" />
+                  <span>Priority Level *</span>
+                </label>
+                <select
+                  name="priority"
+                  required
+                  className="w-full px-3.5 py-2.5 bg-brand-dark border border-brand-muted rounded-xl text-sm text-zinc-300 focus:border-brand-accent/50 outline-none cursor-pointer"
+                >
+                  <option value="High">High</option>
+                  <option value="Medium">Medium</option>
+                  <option value="Low">Low</option>
                 </select>
               </div>
             </div>

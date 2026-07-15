@@ -15,7 +15,7 @@ export async function createProjectAction(formData: FormData): Promise<void> {
   const imageUrl = formData.get("imageUrl") as string;
   const liveUrl = formData.get("liveUrl") as string;
   const githubUrl = formData.get("githubUrl") as string;
-
+  const priority=formData.get("priority") as string;
   const session = await auth.api.getSession({
     headers: await headers(),
   });
@@ -29,7 +29,8 @@ export async function createProjectAction(formData: FormData): Promise<void> {
     !difficulty ||
     !author ||
     !imageUrl ||
-    !liveUrl
+    !liveUrl ||
+    !priority
   ) {
     return;
   }
@@ -39,7 +40,7 @@ export async function createProjectAction(formData: FormData): Promise<void> {
     .filter(Boolean);
 
   try {
-    const response = await fetch("http://localhost:5000/create/project", {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/create/project`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -56,6 +57,7 @@ export async function createProjectAction(formData: FormData): Promise<void> {
         liveUrl,
         githubUrl,
         rating: 5.0,
+        priority
       }),
     });
 

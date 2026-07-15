@@ -55,7 +55,7 @@ export default function ExplorePage() {
         });
 
         const response = await fetch(
-          `http://localhost:5000/projects?${queryParams}`,
+          `${process.env.NEXT_PUBLIC_SERVER_URL}/projects?${queryParams}`,
         );
         const data = await response.json();
         setPaginationItem({

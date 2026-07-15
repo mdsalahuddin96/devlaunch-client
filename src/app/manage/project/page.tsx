@@ -20,7 +20,7 @@ interface Project {
 // Data Fetching
 async function getProjects(id: string, token: string): Promise<Project[]> {
   try {
-    const res = await fetch(`http://localhost:5000/user/project/${id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/user/project/${id}`, {
       cache: "no-store",
       headers: {
         authorization: `Bearer ${token}`,

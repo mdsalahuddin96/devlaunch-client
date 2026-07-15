@@ -20,8 +20,8 @@ export default function LoginPage() {
   
   // Requirement 7 Match: Demo login handler code template string fields
   const handleDemoLogin = () => {
-    setEmail("salauddincse96@email.com"); // Real context user fallback criteria data syntax context
-    setPassword("SecureDevPass96!");
+    setEmail("user@gmail.com"); // Real context user fallback criteria data syntax context
+    setPassword("user.1234");
   };
 
   const handleLoginSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -134,7 +134,7 @@ export default function LoginPage() {
         <p className="text-xs text-center text-zinc-400">
           Don&apos;t have an account?{" "}
           <Link
-            href={`/register?redirectTo=${redirectTo}`}
+            href={`/register?redirectTo=${redirectTo!==null?redirectTo:"/"}`}
             className="text-brand-accent hover:underline font-medium"
           >
             Create account

@@ -56,7 +56,7 @@ export default function DashboardOverview() {
   const fetchDashboardData = async () => {
     try {
       const {data} = await authClient.token();
-      const response = await fetch(`http://localhost:5000/api/dashboard/stats?userId=${userId}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/dashboard/stats?userId=${userId}`, {
         headers: {
           authorization: `Bearer ${data?.token}` 
         }
